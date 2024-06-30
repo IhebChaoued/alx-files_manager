@@ -120,6 +120,7 @@ class FilesController {
   static async getIndex(req, res) {
     const token = req.headers['x-token'];
     const { parentId = 0, page = 0 } = req.query;
+    const pageNum = parseInt(page, 10);
 
     if (!token) {
       return res.status(401).json({ error: 'Unauthorized' });
@@ -138,7 +139,7 @@ class FilesController {
           parentId: parentId === 0 ? 0 : new ObjectId(parentId),
         },
       },
-      { $skip: page * 20 },
+      { $skip: pageNum * 20 },
       { $limit: 20 },
     ]).toArray();
 
