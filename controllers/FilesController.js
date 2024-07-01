@@ -171,7 +171,7 @@ class FilesController {
 
     await dbClient.db.collection('files').updateOne(
       { _id: new ObjectId(fileId) },
-      { $set: { isPublic: true } }
+      { $set: { isPublic: true } },
     );
 
     fileDocument.isPublic = true;
@@ -202,7 +202,7 @@ class FilesController {
 
     await dbClient.db.collection('files').updateOne(
       { _id: new ObjectId(fileId) },
-      { $set: { isPublic: false } }
+      { $set: { isPublic: false } },
     );
 
     fileDocument.isPublic = false;
