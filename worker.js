@@ -1,6 +1,8 @@
 import Bull from 'bull';
 import imageThumbnail from 'image-thumbnail';
 import fs from 'fs';
+import path from 'path';
+import { ObjectId } from 'mongodb';
 import dbClient from './utils/db';
 
 const fileQueue = new Bull('fileQueue');
@@ -30,8 +32,12 @@ fileQueue.process(async (job) => {
 
   for (const size of sizes) {
     const options = { width: size };
-    const thumbnail = await imageThumbnail(localPath, options);
-    fs.writeFileSync(`${localPath}_${size}`, thumbnail);
+    try {
+      const thumbnail = await imageThumbnail(localPath, options);
+      fs.writeFileSync(`${localPath}_${size}`, thumbnail);
+    } catch (error) {
+      console.error(`Error generating thumbnail for size ${size}:`, error.message);
+    }
   }
 });
 
